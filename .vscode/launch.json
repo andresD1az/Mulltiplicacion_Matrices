@@ -1,0 +1,68 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "EJECUTAR AQUI - cambia n y digitos",
+            "request": "launch",
+            "mainClass": "matrices.Main",
+            "classPaths": ["${workspaceFolder}/matrix_algorithms/bin"],
+            "args": ["6", "6"],
+            "vmArgs": "-Xss256m -Xmx8g"
+        },
+        {
+            "type": "java",
+            "name": "n=4  | 16x16     | 6 digitos",
+            "request": "launch",
+            "mainClass": "matrices.Main",
+            "classPaths": ["${workspaceFolder}/matrix_algorithms/bin"],
+            "args": ["4", "6"],
+            "vmArgs": "-Xss256m -Xmx8g"
+        },
+        {
+            "type": "java",
+            "name": "n=6  | 64x64     | 6 digitos",
+            "request": "launch",
+            "mainClass": "matrices.Main",
+            "classPaths": ["${workspaceFolder}/matrix_algorithms/bin"],
+            "args": ["6", "6"],
+            "vmArgs": "-Xss256m -Xmx8g"
+        },
+        {
+            "type": "java",
+            "name": "n=8  | 256x256   | 6 digitos",
+            "request": "launch",
+            "mainClass": "matrices.Main",
+            "classPaths": ["${workspaceFolder}/matrix_algorithms/bin"],
+            "args": ["8", "6"],
+            "vmArgs": "-Xss256m -Xmx8g"
+        },
+        {
+            "type": "java",
+            "name": "n=10 | 1024x1024 | 6 digitos",
+            "request": "launch",
+            "mainClass": "matrices.Main",
+            "classPaths": ["${workspaceFolder}/matrix_algorithms/bin"],
+            "args": ["10", "6"],
+            "vmArgs": "-Xss256m -Xmx8g"
+        },
+        {
+            "type": "java",
+            "name": "n=4  | 16x16     | 50 digitos",
+            "request": "launch",
+            "mainClass": "matrices.Main",
+            "classPaths": ["${workspaceFolder}/matrix_algorithms/bin"],
+            "args": ["4", "50"],
+            "vmArgs": "-Xss256m -Xmx8g"
+        },
+        {
+            "type": "java",
+            "name": "n=6  | 64x64     | 50 digitos",
+            "request": "launch",
+            "mainClass": "matrices.Main",
+            "classPaths": ["${workspaceFolder}/matrix_algorithms/bin"],
+            "args": ["6", "50"],
+            "vmArgs": "-Xss256m -Xmx8g"
+        }
+    ]
+}

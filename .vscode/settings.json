@@ -1,0 +1,6 @@
+{
+    "kiroAgent.configureMCP": "Disabled",
+    "java.project.sourcePaths": ["matrix_algorithms/src"],
+    "java.project.outputPath": "matrix_algorithms/bin",
+    "java.project.referencedLibraries": []
+}
