@@ -6,8 +6,11 @@ import java.time.format.DateTimeFormatter;
 
 /**
  * Guarda los resultados de cada prueba en dos archivos:
- *   - resultados.csv : para graficar en Excel
+ *   - resultados.csv : para graficar en Excel (acumula todas las ejecuciones)
  *   - resultados.txt : reporte legible con explicacion del calculo teorico
+ *
+ * Cada ejecucion se identifica como "Caso 1", "Caso 2", etc.
+ * segun el orden en que se corrieron.
  */
 public class ResultadoGuardador {
 
@@ -21,20 +24,20 @@ public class ResultadoGuardador {
             double k, double[] exponentes, double[] factores) throws IOException {
 
         String timestamp = LocalDateTime.now().format(FMT);
-        boolean csvExiste = new File(CSV).exists();
+
+        // Contar cuantos casos hay ya en el CSV para numerar el nuevo
+        int numeroCaso = contarCasos() + 1;
+        String casoLabel = "Caso " + numeroCaso + " (n=" + tamano + ")";
 
         // --- CSV para Excel ---
         try (PrintWriter pw = new PrintWriter(new FileWriter(CSV, true))) {
-            if (!csvExiste) {
-                pw.println("Fecha,Tamano,Digitos,Algoritmo,Complejidad,Operaciones,Estimado_ms,Real_ms,Ratio");
-            }
             for (int i = 0; i < nombres.length; i++) {
                 long ops = Math.round(factores[i] * Math.pow(tamano, exponentes[i]));
                 double ratio = (estimados[i] > 0 && reales[i] >= 0)
                     ? (double) reales[i] / estimados[i] : 0;
-                pw.printf("%s,%d,%d,%s,O(n^%.3f),%d,%d,%d,%.2f%n",
-                    timestamp, tamano, digitos, nombres[i],
-                    exponentes[i], ops,
+                pw.printf("%s,%s,%d,%d,%s,O(n^%.3f),%d,%d,%d,%.2f%n",
+                    casoLabel, timestamp, tamano, digitos,
+                    nombres[i], exponentes[i], ops,
                     estimados[i],
                     reales[i] >= 0 ? reales[i] : -1,
                     ratio);
@@ -45,12 +48,11 @@ public class ResultadoGuardador {
         try (PrintWriter pw = new PrintWriter(new FileWriter(TXT, true))) {
             pw.println();
             pw.println(linea('=', 70));
-            pw.println("PRUEBA: " + timestamp);
+            pw.println(casoLabel + " | " + timestamp);
             pw.println("Matriz : " + tamano + " x " + tamano);
             pw.println("Digitos: " + digitos + " por valor");
             pw.println(linea('=', 70));
             pw.println();
-
             pw.println("COMO SE CALCULA EL TIEMPO TEORICO:");
             pw.println(linea('-', 70));
             pw.println("1. Calibracion: se mide NaivOnArray con matriz 16x16");
@@ -62,37 +64,29 @@ public class ResultadoGuardador {
             pw.println("   tiempo_estimado = k * operaciones");
             pw.println();
             pw.println("   Exponentes por complejidad teorica:");
-            pw.println("   NaivOnArray, bloques : O(n^3)     exponente=3.0,   factor=1.0");
-            pw.println("   LoopUnrollingTwo     : O(n^3)     exponente=3.0,   factor=0.5");
-            pw.println("   LoopUnrollingFour    : O(n^3)     exponente=3.0,   factor=0.25");
-            pw.println("   WinogradOriginal     : O(n^3)     exponente=3.0,   factor=0.5");
-            pw.println("   StrassenNaiv         : O(n^2.807) exponente=2.807, factor=1.0");
-            pw.println("   StrassenWinograd     : O(n^2.807) exponente=2.807, factor=0.83");
+            pw.println("   NaivOnArray, bloques : O(n^3)     factor=1.0");
+            pw.println("   LoopUnrollingTwo     : O(n^3)     factor=0.5  (ciclo/2)");
+            pw.println("   LoopUnrollingFour    : O(n^3)     factor=0.25 (ciclo/4)");
+            pw.println("   WinogradOriginal     : O(n^3)     factor=0.5");
+            pw.println("   StrassenNaiv         : O(n^2.807) factor=1.0");
+            pw.println("   StrassenWinograd     : O(n^2.807) factor=0.83");
             pw.println();
-            pw.println("3. Ejemplo con n=" + tamano + ":");
-            long opsEj = (long) Math.pow(tamano, 3);
-            pw.printf( "   NaivOnArray: %.6f * 1.0 * %d^3 = %.6f * %d = %.0f ms%n",
-                k, tamano, k, opsEj, k * opsEj);
-            pw.println();
-
             pw.println(linea('-', 70));
             pw.printf("%-28s %-12s %-10s %-12s %-12s %-14s%n",
                 "Algoritmo", "Complejidad", "Ops", "Estimado", "Real", "Ratio");
             pw.println(linea('-', 70));
-
             for (int i = 0; i < nombres.length; i++) {
                 long ops = Math.round(factores[i] * Math.pow(tamano, exponentes[i]));
                 String realStr = reales[i] >= 0 ? formatMs(reales[i]) : "ERROR";
                 double ratio = (estimados[i] > 0 && reales[i] >= 0)
                     ? (double) reales[i] / estimados[i] : 0;
-                String analisis = analizar(ratio);
                 pw.printf("%-28s %-12s %-10s %-12s %-12s %-14s%n",
                     nombres[i],
                     "O(n^" + String.format("%.3f", exponentes[i]) + ")",
                     formatOps(ops),
                     formatMs(estimados[i]),
                     realStr,
-                    reales[i] >= 0 ? String.format("%.2fx %s", ratio, analisis) : "N/A");
+                    reales[i] >= 0 ? String.format("%.2fx %s", ratio, analizar(ratio)) : "N/A");
             }
             pw.println(linea('-', 70));
             pw.println();
@@ -104,9 +98,28 @@ public class ResultadoGuardador {
         }
 
         System.out.println();
-        System.out.println("Resultados guardados en:");
-        System.out.println("  " + new File(CSV).getAbsolutePath());
-        System.out.println("  " + new File(TXT).getAbsolutePath());
+        System.out.println("Resultados guardados como " + casoLabel);
+        System.out.println("  CSV: " + new File(CSV).getAbsolutePath());
+        System.out.println("  TXT: " + new File(TXT).getAbsolutePath());
+    }
+
+    /** Cuenta cuantos casos distintos hay ya en el CSV */
+    static int contarCasos() {
+        try (BufferedReader br = new BufferedReader(new FileReader(CSV))) {
+            String linea;
+            int maxCaso = 0;
+            while ((linea = br.readLine()) != null) {
+                if (linea.startsWith("Caso ")) {
+                    try {
+                        int num = Integer.parseInt(linea.split(" ")[1]);
+                        if (num > maxCaso) maxCaso = num;
+                    } catch (Exception ignored) {}
+                }
+            }
+            return maxCaso;
+        } catch (Exception e) {
+            return 0;
+        }
     }
 
     static String linea(char c, int n) {

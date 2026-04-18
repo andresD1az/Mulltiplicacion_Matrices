@@ -54,8 +54,8 @@ public class Main {
 
     //  CAMBIA ESTOS DOS VALORES Y PRESIONA RUN
     // ============================================================
-    static final int N_POTENCIA = 10;   // tamano = 2^N_POTENCIA  (6 = 64x64)
-    static final int DIGITOS    = 6;   // digitos por valor (minimo 6)
+    static final int N_POTENCIA = 13;   // tamano = 2^N_POTENCIA  
+    static final int DIGITOS    = 6 ;   // digitos por valor (minimo 6)
 
     public static void main(String[] args) throws Exception {
         // Siempre usa las constantes N_POTENCIA y DIGITOS definidas arriba
@@ -173,7 +173,7 @@ public class Main {
         }
         linea();
 
-        // Guardar resultados en archivo
+        // Guardar resultados en archivo (acumula cada ejecucion para graficar)
         ResultadoGuardador.guardar(tamano, digitos, NOMBRES,
             estimados, tiempos, k, EXPONENTE, FACTOR_OPS);
 

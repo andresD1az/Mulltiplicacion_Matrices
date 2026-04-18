@@ -1,483 +1,8 @@
+RESULTADOS DE PRUEBAS - MULTIPLICACION DE MATRICES GRANDES
+Seguimiento 2 - 2026-1
 
 ======================================================================
-PRUEBA: 2026-04-18 09:22:46
-Matriz : 16 x 16
-Digitos: 6 por valor
-======================================================================
-
-COMO SE CALCULA EL TIEMPO TEORICO:
-----------------------------------------------------------------------
-1. Calibracion: se mide NaivOnArray con matriz 16x16
-   k = tiempo_real / 16^3 = tiempo / 4096 operaciones
-   k = 0,000977 ms por operacion BigInteger en esta maquina
-
-2. Para cada algoritmo:
-   operaciones = factor * n^exponente
-   tiempo_estimado = k * operaciones
-
-   Exponentes por complejidad teorica:
-   NaivOnArray, bloques : O(n^3)     exponente=3.0,   factor=1.0
-   LoopUnrollingTwo     : O(n^3)     exponente=3.0,   factor=0.5
-   LoopUnrollingFour    : O(n^3)     exponente=3.0,   factor=0.25
-   WinogradOriginal     : O(n^3)     exponente=3.0,   factor=0.5
-   StrassenNaiv         : O(n^2.807) exponente=2.807, factor=1.0
-   StrassenWinograd     : O(n^2.807) exponente=2.807, factor=0.83
-
-3. Ejemplo con n=16:
-   NaivOnArray: 0,000977 * 1.0 * 16^3 = 0,000977 * 4096 = 4 ms
-
-----------------------------------------------------------------------
-Algoritmo                    Complejidad  Ops        Estimado     Real         Ratio         
-----------------------------------------------------------------------
-1.NaivOnArray                O(n^3,000)   4,1K       4 ms         0 ms         0,00x         
-2.NaivLoopUnrollingTwo       O(n^3,000)   2,0K       2 ms         3 ms         1,50x (algo lento)
-3.NaivLoopUnrollingFour      O(n^3,000)   1,0K       1 ms         4 ms         4,00x (mucho mas lento)
-4.WinogradOriginal           O(n^3,000)   2,0K       2 ms         2 ms         1,00x (acorde)
-5.WinogradScaled             O(n^3,000)   2,0K       2 ms         2 ms         1,00x (acorde)
-6.StrassenNaiv               O(n^2,807)   2,4K       2 ms         6 ms         3,00x (mucho mas lento)
-7.StrassenWinograd           O(n^2,807)   2,0K       2 ms         13 ms        6,50x (mucho mas lento)
-8.III.3-SeqBlock             O(n^3,000)   4,1K       4 ms         0 ms         0,00x         
-9.III.4-ParBlock             O(n^3,000)   4,1K       4 ms         7 ms         1,75x (algo lento)
-10.III.5-EnhParBlock         O(n^3,000)   4,1K       4 ms         12 ms        3,00x (mucho mas lento)
-11.IV.3-SeqBlock             O(n^3,000)   4,1K       4 ms         6 ms         1,50x (algo lento)
-12.IV.4-ParBlock             O(n^3,000)   4,1K       4 ms         4 ms         1,00x (acorde)
-13.IV.5-EnhParBlock          O(n^3,000)   4,1K       4 ms         14 ms        3,50x (mucho mas lento)
-14.V.3-SeqBlock              O(n^3,000)   4,1K       4 ms         4 ms         1,00x (acorde)
-15.V.4-ParBlock              O(n^3,000)   4,1K       4 ms         14 ms        3,50x (mucho mas lento)
-----------------------------------------------------------------------
-
-INTERPRETACION DEL RATIO (real / estimado):
-  < 0.9x : mas rapido que la teoria (JIT, cache, paralelismo)
-  ~ 1.0x : acorde a la teoria
-  > 1.1x : mas lento (overhead BigInteger, GC, contention hilos)
-
-
-======================================================================
-PRUEBA: 2026-04-18 09:34:29
-Matriz : 64 x 64
-Digitos: 6 por valor
-======================================================================
-
-COMO SE CALCULA EL TIEMPO TEORICO:
-----------------------------------------------------------------------
-1. Calibracion: se mide NaivOnArray con matriz 16x16
-   k = tiempo_real / 16^3 = tiempo / 4096 operaciones
-   k = 0,000732 ms por operacion BigInteger en esta maquina
-
-2. Para cada algoritmo:
-   operaciones = factor * n^exponente
-   tiempo_estimado = k * operaciones
-
-   Exponentes por complejidad teorica:
-   NaivOnArray, bloques : O(n^3)     exponente=3.0,   factor=1.0
-   LoopUnrollingTwo     : O(n^3)     exponente=3.0,   factor=0.5
-   LoopUnrollingFour    : O(n^3)     exponente=3.0,   factor=0.25
-   WinogradOriginal     : O(n^3)     exponente=3.0,   factor=0.5
-   StrassenNaiv         : O(n^2.807) exponente=2.807, factor=1.0
-   StrassenWinograd     : O(n^2.807) exponente=2.807, factor=0.83
-
-3. Ejemplo con n=64:
-   NaivOnArray: 0,000732 * 1.0 * 64^3 = 0,000732 * 262144 = 192 ms
-
-----------------------------------------------------------------------
-Algoritmo                    Complejidad  Ops        Estimado     Real         Ratio         
-----------------------------------------------------------------------
-1.NaivOnArray                O(n^3,000)   262,1K     192 ms       119 ms       0,62x (mejor) 
-2.NaivLoopUnrollingTwo       O(n^3,000)   131,1K     96 ms        101 ms       1,05x (acorde)
-3.NaivLoopUnrollingFour      O(n^3,000)   65,5K      48 ms        132 ms       2,75x (mucho mas lento)
-4.WinogradOriginal           O(n^3,000)   131,1K     96 ms        136 ms       1,42x (algo lento)
-5.WinogradScaled             O(n^3,000)   131,1K     96 ms        72 ms        0,75x (mejor) 
-6.StrassenNaiv               O(n^2,807)   117,5K     86 ms        159 ms       1,85x (algo lento)
-7.StrassenWinograd           O(n^2,807)   97,5K      71 ms        154 ms       2,17x (mucho mas lento)
-8.III.3-SeqBlock             O(n^3,000)   262,1K     192 ms       117 ms       0,61x (mejor) 
-9.III.4-ParBlock             O(n^3,000)   262,1K     192 ms       123 ms       0,64x (mejor) 
-10.III.5-EnhParBlock         O(n^3,000)   262,1K     192 ms       79 ms        0,41x (mucho mejor)
-11.IV.3-SeqBlock             O(n^3,000)   262,1K     192 ms       109 ms       0,57x (mejor) 
-12.IV.4-ParBlock             O(n^3,000)   262,1K     192 ms       128 ms       0,67x (mejor) 
-13.IV.5-EnhParBlock          O(n^3,000)   262,1K     192 ms       94 ms        0,49x (mucho mejor)
-14.V.3-SeqBlock              O(n^3,000)   262,1K     192 ms       109 ms       0,57x (mejor) 
-15.V.4-ParBlock              O(n^3,000)   262,1K     192 ms       98 ms        0,51x (mejor) 
-----------------------------------------------------------------------
-
-INTERPRETACION DEL RATIO (real / estimado):
-  < 0.9x : mas rapido que la teoria (JIT, cache, paralelismo)
-  ~ 1.0x : acorde a la teoria
-  > 1.1x : mas lento (overhead BigInteger, GC, contention hilos)
-
-
-======================================================================
-PRUEBA: 2026-04-18 09:34:35
-Matriz : 64 x 64
-Digitos: 6 por valor
-======================================================================
-
-COMO SE CALCULA EL TIEMPO TEORICO:
-----------------------------------------------------------------------
-1. Calibracion: se mide NaivOnArray con matriz 16x16
-   k = tiempo_real / 16^3 = tiempo / 4096 operaciones
-   k = 0,000977 ms por operacion BigInteger en esta maquina
-
-2. Para cada algoritmo:
-   operaciones = factor * n^exponente
-   tiempo_estimado = k * operaciones
-
-   Exponentes por complejidad teorica:
-   NaivOnArray, bloques : O(n^3)     exponente=3.0,   factor=1.0
-   LoopUnrollingTwo     : O(n^3)     exponente=3.0,   factor=0.5
-   LoopUnrollingFour    : O(n^3)     exponente=3.0,   factor=0.25
-   WinogradOriginal     : O(n^3)     exponente=3.0,   factor=0.5
-   StrassenNaiv         : O(n^2.807) exponente=2.807, factor=1.0
-   StrassenWinograd     : O(n^2.807) exponente=2.807, factor=0.83
-
-3. Ejemplo con n=64:
-   NaivOnArray: 0,000977 * 1.0 * 64^3 = 0,000977 * 262144 = 256 ms
-
-----------------------------------------------------------------------
-Algoritmo                    Complejidad  Ops        Estimado     Real         Ratio         
-----------------------------------------------------------------------
-1.NaivOnArray                O(n^3,000)   262,1K     256 ms       104 ms       0,41x (mucho mejor)
-2.NaivLoopUnrollingTwo       O(n^3,000)   131,1K     128 ms       184 ms       1,44x (algo lento)
-3.NaivLoopUnrollingFour      O(n^3,000)   65,5K      64 ms        115 ms       1,80x (algo lento)
-4.WinogradOriginal           O(n^3,000)   131,1K     128 ms       182 ms       1,42x (algo lento)
-5.WinogradScaled             O(n^3,000)   131,1K     128 ms       84 ms        0,66x (mejor) 
-6.StrassenNaiv               O(n^2,807)   117,5K     115 ms       209 ms       1,82x (algo lento)
-7.StrassenWinograd           O(n^2,807)   97,5K      95 ms        198 ms       2,08x (mucho mas lento)
-8.III.3-SeqBlock             O(n^3,000)   262,1K     256 ms       194 ms       0,76x (mejor) 
-9.III.4-ParBlock             O(n^3,000)   262,1K     256 ms       198 ms       0,77x (mejor) 
-10.III.5-EnhParBlock         O(n^3,000)   262,1K     256 ms       174 ms       0,68x (mejor) 
-11.IV.3-SeqBlock             O(n^3,000)   262,1K     256 ms       188 ms       0,73x (mejor) 
-12.IV.4-ParBlock             O(n^3,000)   262,1K     256 ms       196 ms       0,77x (mejor) 
-13.IV.5-EnhParBlock          O(n^3,000)   262,1K     256 ms       182 ms       0,71x (mejor) 
-14.V.3-SeqBlock              O(n^3,000)   262,1K     256 ms       176 ms       0,69x (mejor) 
-15.V.4-ParBlock              O(n^3,000)   262,1K     256 ms       157 ms       0,61x (mejor) 
-----------------------------------------------------------------------
-
-INTERPRETACION DEL RATIO (real / estimado):
-  < 0.9x : mas rapido que la teoria (JIT, cache, paralelismo)
-  ~ 1.0x : acorde a la teoria
-  > 1.1x : mas lento (overhead BigInteger, GC, contention hilos)
-
-
-======================================================================
-PRUEBA: 2026-04-18 09:36:38
-Matriz : 64 x 64
-Digitos: 6 por valor
-======================================================================
-
-COMO SE CALCULA EL TIEMPO TEORICO:
-----------------------------------------------------------------------
-1. Calibracion: se mide NaivOnArray con matriz 16x16
-   k = tiempo_real / 16^3 = tiempo / 4096 operaciones
-   k = 0,000488 ms por operacion BigInteger en esta maquina
-
-2. Para cada algoritmo:
-   operaciones = factor * n^exponente
-   tiempo_estimado = k * operaciones
-
-   Exponentes por complejidad teorica:
-   NaivOnArray, bloques : O(n^3)     exponente=3.0,   factor=1.0
-   LoopUnrollingTwo     : O(n^3)     exponente=3.0,   factor=0.5
-   LoopUnrollingFour    : O(n^3)     exponente=3.0,   factor=0.25
-   WinogradOriginal     : O(n^3)     exponente=3.0,   factor=0.5
-   StrassenNaiv         : O(n^2.807) exponente=2.807, factor=1.0
-   StrassenWinograd     : O(n^2.807) exponente=2.807, factor=0.83
-
-3. Ejemplo con n=64:
-   NaivOnArray: 0,000488 * 1.0 * 64^3 = 0,000488 * 262144 = 128 ms
-
-----------------------------------------------------------------------
-Algoritmo                    Complejidad  Ops        Estimado     Real         Ratio         
-----------------------------------------------------------------------
-1.NaivOnArray                O(n^3,000)   262,1K     128 ms       81 ms        0,63x (mejor) 
-2.NaivLoopUnrollingTwo       O(n^3,000)   131,1K     64 ms        95 ms        1,48x (algo lento)
-3.NaivLoopUnrollingFour      O(n^3,000)   65,5K      32 ms        102 ms       3,19x (mucho mas lento)
-4.WinogradOriginal           O(n^3,000)   131,1K     64 ms        97 ms        1,52x (algo lento)
-5.WinogradScaled             O(n^3,000)   131,1K     64 ms        38 ms        0,59x (mejor) 
-6.StrassenNaiv               O(n^2,807)   117,5K     57 ms        162 ms       2,84x (mucho mas lento)
-7.StrassenWinograd           O(n^2,807)   97,5K      48 ms        152 ms       3,17x (mucho mas lento)
-8.III.3-SeqBlock             O(n^3,000)   262,1K     128 ms       115 ms       0,90x (mejor) 
-9.III.4-ParBlock             O(n^3,000)   262,1K     128 ms       133 ms       1,04x (acorde)
-10.III.5-EnhParBlock         O(n^3,000)   262,1K     128 ms       84 ms        0,66x (mejor) 
-11.IV.3-SeqBlock             O(n^3,000)   262,1K     128 ms       41 ms        0,32x (mucho mejor)
-12.IV.4-ParBlock             O(n^3,000)   262,1K     128 ms       109 ms       0,85x (mejor) 
-13.IV.5-EnhParBlock          O(n^3,000)   262,1K     128 ms       106 ms       0,83x (mejor) 
-14.V.3-SeqBlock              O(n^3,000)   262,1K     128 ms       100 ms       0,78x (mejor) 
-15.V.4-ParBlock              O(n^3,000)   262,1K     128 ms       29 ms        0,23x (mucho mejor)
-----------------------------------------------------------------------
-
-INTERPRETACION DEL RATIO (real / estimado):
-  < 0.9x : mas rapido que la teoria (JIT, cache, paralelismo)
-  ~ 1.0x : acorde a la teoria
-  > 1.1x : mas lento (overhead BigInteger, GC, contention hilos)
-
-
-======================================================================
-PRUEBA: 2026-04-18 09:36:48
-Matriz : 64 x 64
-Digitos: 6 por valor
-======================================================================
-
-COMO SE CALCULA EL TIEMPO TEORICO:
-----------------------------------------------------------------------
-1. Calibracion: se mide NaivOnArray con matriz 16x16
-   k = tiempo_real / 16^3 = tiempo / 4096 operaciones
-   k = 0,000732 ms por operacion BigInteger en esta maquina
-
-2. Para cada algoritmo:
-   operaciones = factor * n^exponente
-   tiempo_estimado = k * operaciones
-
-   Exponentes por complejidad teorica:
-   NaivOnArray, bloques : O(n^3)     exponente=3.0,   factor=1.0
-   LoopUnrollingTwo     : O(n^3)     exponente=3.0,   factor=0.5
-   LoopUnrollingFour    : O(n^3)     exponente=3.0,   factor=0.25
-   WinogradOriginal     : O(n^3)     exponente=3.0,   factor=0.5
-   StrassenNaiv         : O(n^2.807) exponente=2.807, factor=1.0
-   StrassenWinograd     : O(n^2.807) exponente=2.807, factor=0.83
-
-3. Ejemplo con n=64:
-   NaivOnArray: 0,000732 * 1.0 * 64^3 = 0,000732 * 262144 = 192 ms
-
-----------------------------------------------------------------------
-Algoritmo                    Complejidad  Ops        Estimado     Real         Ratio         
-----------------------------------------------------------------------
-1.NaivOnArray                O(n^3,000)   262,1K     192 ms       95 ms        0,49x (mucho mejor)
-2.NaivLoopUnrollingTwo       O(n^3,000)   131,1K     96 ms        97 ms        1,01x (acorde)
-3.NaivLoopUnrollingFour      O(n^3,000)   65,5K      48 ms        85 ms        1,77x (algo lento)
-4.WinogradOriginal           O(n^3,000)   131,1K     96 ms        90 ms        0,94x (acorde)
-5.WinogradScaled             O(n^3,000)   131,1K     96 ms        35 ms        0,36x (mucho mejor)
-6.StrassenNaiv               O(n^2,807)   117,5K     86 ms        142 ms       1,65x (algo lento)
-7.StrassenWinograd           O(n^2,807)   97,5K      71 ms        132 ms       1,86x (algo lento)
-8.III.3-SeqBlock             O(n^3,000)   262,1K     192 ms       71 ms        0,37x (mucho mejor)
-9.III.4-ParBlock             O(n^3,000)   262,1K     192 ms       107 ms       0,56x (mejor) 
-10.III.5-EnhParBlock         O(n^3,000)   262,1K     192 ms       103 ms       0,54x (mejor) 
-11.IV.3-SeqBlock             O(n^3,000)   262,1K     192 ms       63 ms        0,33x (mucho mejor)
-12.IV.4-ParBlock             O(n^3,000)   262,1K     192 ms       69 ms        0,36x (mucho mejor)
-13.IV.5-EnhParBlock          O(n^3,000)   262,1K     192 ms       113 ms       0,59x (mejor) 
-14.V.3-SeqBlock              O(n^3,000)   262,1K     192 ms       97 ms        0,51x (mejor) 
-15.V.4-ParBlock              O(n^3,000)   262,1K     192 ms       101 ms       0,53x (mejor) 
-----------------------------------------------------------------------
-
-INTERPRETACION DEL RATIO (real / estimado):
-  < 0.9x : mas rapido que la teoria (JIT, cache, paralelismo)
-  ~ 1.0x : acorde a la teoria
-  > 1.1x : mas lento (overhead BigInteger, GC, contention hilos)
-
-
-======================================================================
-PRUEBA: 2026-04-18 09:38:30
-Matriz : 64 x 64
-Digitos: 6 por valor
-======================================================================
-
-COMO SE CALCULA EL TIEMPO TEORICO:
-----------------------------------------------------------------------
-1. Calibracion: se mide NaivOnArray con matriz 16x16
-   k = tiempo_real / 16^3 = tiempo / 4096 operaciones
-   k = 0,001465 ms por operacion BigInteger en esta maquina
-
-2. Para cada algoritmo:
-   operaciones = factor * n^exponente
-   tiempo_estimado = k * operaciones
-
-   Exponentes por complejidad teorica:
-   NaivOnArray, bloques : O(n^3)     exponente=3.0,   factor=1.0
-   LoopUnrollingTwo     : O(n^3)     exponente=3.0,   factor=0.5
-   LoopUnrollingFour    : O(n^3)     exponente=3.0,   factor=0.25
-   WinogradOriginal     : O(n^3)     exponente=3.0,   factor=0.5
-   StrassenNaiv         : O(n^2.807) exponente=2.807, factor=1.0
-   StrassenWinograd     : O(n^2.807) exponente=2.807, factor=0.83
-
-3. Ejemplo con n=64:
-   NaivOnArray: 0,001465 * 1.0 * 64^3 = 0,001465 * 262144 = 384 ms
-
-----------------------------------------------------------------------
-Algoritmo                    Complejidad  Ops        Estimado     Real         Ratio         
-----------------------------------------------------------------------
-1.NaivOnArray                O(n^3,000)   262,1K     384 ms       262 ms       0,68x (mejor) 
-2.NaivLoopUnrollingTwo       O(n^3,000)   131,1K     192 ms       268 ms       1,40x (algo lento)
-3.NaivLoopUnrollingFour      O(n^3,000)   65,5K      96 ms        225 ms       2,34x (mucho mas lento)
-4.WinogradOriginal           O(n^3,000)   131,1K     192 ms       233 ms       1,21x (algo lento)
-5.WinogradScaled             O(n^3,000)   131,1K     192 ms       201 ms       1,05x (acorde)
-6.StrassenNaiv               O(n^2,807)   117,5K     172 ms       288 ms       1,67x (algo lento)
-7.StrassenWinograd           O(n^2,807)   97,5K      143 ms       278 ms       1,94x (algo lento)
-8.III.3-SeqBlock             O(n^3,000)   262,1K     384 ms       241 ms       0,63x (mejor) 
-9.III.4-ParBlock             O(n^3,000)   262,1K     384 ms       261 ms       0,68x (mejor) 
-10.III.5-EnhParBlock         O(n^3,000)   262,1K     384 ms       165 ms       0,43x (mucho mejor)
-11.IV.3-SeqBlock             O(n^3,000)   262,1K     384 ms       241 ms       0,63x (mejor) 
-12.IV.4-ParBlock             O(n^3,000)   262,1K     384 ms       233 ms       0,61x (mejor) 
-13.IV.5-EnhParBlock          O(n^3,000)   262,1K     384 ms       195 ms       0,51x (mejor) 
-14.V.3-SeqBlock              O(n^3,000)   262,1K     384 ms       249 ms       0,65x (mejor) 
-15.V.4-ParBlock              O(n^3,000)   262,1K     384 ms       179 ms       0,47x (mucho mejor)
-----------------------------------------------------------------------
-
-INTERPRETACION DEL RATIO (real / estimado):
-  < 0.9x : mas rapido que la teoria (JIT, cache, paralelismo)
-  ~ 1.0x : acorde a la teoria
-  > 1.1x : mas lento (overhead BigInteger, GC, contention hilos)
-
-
-======================================================================
-PRUEBA: 2026-04-18 09:39:02
-Matriz : 64 x 64
-Digitos: 6 por valor
-======================================================================
-
-COMO SE CALCULA EL TIEMPO TEORICO:
-----------------------------------------------------------------------
-1. Calibracion: se mide NaivOnArray con matriz 16x16
-   k = tiempo_real / 16^3 = tiempo / 4096 operaciones
-   k = 0,000488 ms por operacion BigInteger en esta maquina
-
-2. Para cada algoritmo:
-   operaciones = factor * n^exponente
-   tiempo_estimado = k * operaciones
-
-   Exponentes por complejidad teorica:
-   NaivOnArray, bloques : O(n^3)     exponente=3.0,   factor=1.0
-   LoopUnrollingTwo     : O(n^3)     exponente=3.0,   factor=0.5
-   LoopUnrollingFour    : O(n^3)     exponente=3.0,   factor=0.25
-   WinogradOriginal     : O(n^3)     exponente=3.0,   factor=0.5
-   StrassenNaiv         : O(n^2.807) exponente=2.807, factor=1.0
-   StrassenWinograd     : O(n^2.807) exponente=2.807, factor=0.83
-
-3. Ejemplo con n=64:
-   NaivOnArray: 0,000488 * 1.0 * 64^3 = 0,000488 * 262144 = 128 ms
-
-----------------------------------------------------------------------
-Algoritmo                    Complejidad  Ops        Estimado     Real         Ratio         
-----------------------------------------------------------------------
-1.NaivOnArray                O(n^3,000)   262,1K     128 ms       114 ms       0,89x (mejor) 
-2.NaivLoopUnrollingTwo       O(n^3,000)   131,1K     64 ms        116 ms       1,81x (algo lento)
-3.NaivLoopUnrollingFour      O(n^3,000)   65,5K      32 ms        112 ms       3,50x (mucho mas lento)
-4.WinogradOriginal           O(n^3,000)   131,1K     64 ms        113 ms       1,77x (algo lento)
-5.WinogradScaled             O(n^3,000)   131,1K     64 ms        85 ms        1,33x (algo lento)
-6.StrassenNaiv               O(n^2,807)   117,5K     57 ms        156 ms       2,74x (mucho mas lento)
-7.StrassenWinograd           O(n^2,807)   97,5K      48 ms        131 ms       2,73x (mucho mas lento)
-8.III.3-SeqBlock             O(n^3,000)   262,1K     128 ms       108 ms       0,84x (mejor) 
-9.III.4-ParBlock             O(n^3,000)   262,1K     128 ms       122 ms       0,95x (acorde)
-10.III.5-EnhParBlock         O(n^3,000)   262,1K     128 ms       96 ms        0,75x (mejor) 
-11.IV.3-SeqBlock             O(n^3,000)   262,1K     128 ms       131 ms       1,02x (acorde)
-12.IV.4-ParBlock             O(n^3,000)   262,1K     128 ms       116 ms       0,91x (acorde)
-13.IV.5-EnhParBlock          O(n^3,000)   262,1K     128 ms       77 ms        0,60x (mejor) 
-14.V.3-SeqBlock              O(n^3,000)   262,1K     128 ms       105 ms       0,82x (mejor) 
-15.V.4-ParBlock              O(n^3,000)   262,1K     128 ms       96 ms        0,75x (mejor) 
-----------------------------------------------------------------------
-
-INTERPRETACION DEL RATIO (real / estimado):
-  < 0.9x : mas rapido que la teoria (JIT, cache, paralelismo)
-  ~ 1.0x : acorde a la teoria
-  > 1.1x : mas lento (overhead BigInteger, GC, contention hilos)
-
-
-======================================================================
-PRUEBA: 2026-04-18 09:39:53
-Matriz : 64 x 64
-Digitos: 6 por valor
-======================================================================
-
-COMO SE CALCULA EL TIEMPO TEORICO:
-----------------------------------------------------------------------
-1. Calibracion: se mide NaivOnArray con matriz 16x16
-   k = tiempo_real / 16^3 = tiempo / 4096 operaciones
-   k = 0,000244 ms por operacion BigInteger en esta maquina
-
-2. Para cada algoritmo:
-   operaciones = factor * n^exponente
-   tiempo_estimado = k * operaciones
-
-   Exponentes por complejidad teorica:
-   NaivOnArray, bloques : O(n^3)     exponente=3.0,   factor=1.0
-   LoopUnrollingTwo     : O(n^3)     exponente=3.0,   factor=0.5
-   LoopUnrollingFour    : O(n^3)     exponente=3.0,   factor=0.25
-   WinogradOriginal     : O(n^3)     exponente=3.0,   factor=0.5
-   StrassenNaiv         : O(n^2.807) exponente=2.807, factor=1.0
-   StrassenWinograd     : O(n^2.807) exponente=2.807, factor=0.83
-
-3. Ejemplo con n=64:
-   NaivOnArray: 0,000244 * 1.0 * 64^3 = 0,000244 * 262144 = 64 ms
-
-----------------------------------------------------------------------
-Algoritmo                    Complejidad  Ops        Estimado     Real         Ratio         
-----------------------------------------------------------------------
-1.NaivOnArray                O(n^3,000)   262,1K     64 ms        131 ms       2,05x (mucho mas lento)
-2.NaivLoopUnrollingTwo       O(n^3,000)   131,1K     32 ms        125 ms       3,91x (mucho mas lento)
-3.NaivLoopUnrollingFour      O(n^3,000)   65,5K      16 ms        137 ms       8,56x (mucho mas lento)
-4.WinogradOriginal           O(n^3,000)   131,1K     32 ms        218 ms       6,81x (mucho mas lento)
-5.WinogradScaled             O(n^3,000)   131,1K     32 ms        129 ms       4,03x (mucho mas lento)
-6.StrassenNaiv               O(n^2,807)   117,5K     29 ms        257 ms       8,86x (mucho mas lento)
-7.StrassenWinograd           O(n^2,807)   97,5K      24 ms        192 ms       8,00x (mucho mas lento)
-8.III.3-SeqBlock             O(n^3,000)   262,1K     64 ms        122 ms       1,91x (algo lento)
-9.III.4-ParBlock             O(n^3,000)   262,1K     64 ms        166 ms       2,59x (mucho mas lento)
-10.III.5-EnhParBlock         O(n^3,000)   262,1K     64 ms        100 ms       1,56x (algo lento)
-11.IV.3-SeqBlock             O(n^3,000)   262,1K     64 ms        89 ms        1,39x (algo lento)
-12.IV.4-ParBlock             O(n^3,000)   262,1K     64 ms        159 ms       2,48x (mucho mas lento)
-13.IV.5-EnhParBlock          O(n^3,000)   262,1K     64 ms        112 ms       1,75x (algo lento)
-14.V.3-SeqBlock              O(n^3,000)   262,1K     64 ms        115 ms       1,80x (algo lento)
-15.V.4-ParBlock              O(n^3,000)   262,1K     64 ms        115 ms       1,80x (algo lento)
-----------------------------------------------------------------------
-
-INTERPRETACION DEL RATIO (real / estimado):
-  < 0.9x : mas rapido que la teoria (JIT, cache, paralelismo)
-  ~ 1.0x : acorde a la teoria
-  > 1.1x : mas lento (overhead BigInteger, GC, contention hilos)
-
-
-======================================================================
-PRUEBA: 2026-04-18 09:40:44
-Matriz : 64 x 64
-Digitos: 6 por valor
-======================================================================
-
-COMO SE CALCULA EL TIEMPO TEORICO:
-----------------------------------------------------------------------
-1. Calibracion: se mide NaivOnArray con matriz 16x16
-   k = tiempo_real / 16^3 = tiempo / 4096 operaciones
-   k = 0,002197 ms por operacion BigInteger en esta maquina
-
-2. Para cada algoritmo:
-   operaciones = factor * n^exponente
-   tiempo_estimado = k * operaciones
-
-   Exponentes por complejidad teorica:
-   NaivOnArray, bloques : O(n^3)     exponente=3.0,   factor=1.0
-   LoopUnrollingTwo     : O(n^3)     exponente=3.0,   factor=0.5
-   LoopUnrollingFour    : O(n^3)     exponente=3.0,   factor=0.25
-   WinogradOriginal     : O(n^3)     exponente=3.0,   factor=0.5
-   StrassenNaiv         : O(n^2.807) exponente=2.807, factor=1.0
-   StrassenWinograd     : O(n^2.807) exponente=2.807, factor=0.83
-
-3. Ejemplo con n=64:
-   NaivOnArray: 0,002197 * 1.0 * 64^3 = 0,002197 * 262144 = 576 ms
-
-----------------------------------------------------------------------
-Algoritmo                    Complejidad  Ops        Estimado     Real         Ratio         
-----------------------------------------------------------------------
-1.NaivOnArray                O(n^3,000)   262,1K     576 ms       64 ms        0,11x (mucho mejor)
-2.NaivLoopUnrollingTwo       O(n^3,000)   131,1K     288 ms       76 ms        0,26x (mucho mejor)
-3.NaivLoopUnrollingFour      O(n^3,000)   65,5K      144 ms       68 ms        0,47x (mucho mejor)
-4.WinogradOriginal           O(n^3,000)   131,1K     288 ms       90 ms        0,31x (mucho mejor)
-5.WinogradScaled             O(n^3,000)   131,1K     288 ms       24 ms        0,08x (mucho mejor)
-6.StrassenNaiv               O(n^2,807)   117,5K     258 ms       134 ms       0,52x (mejor) 
-7.StrassenWinograd           O(n^2,807)   97,5K      214 ms       115 ms       0,54x (mejor) 
-8.III.3-SeqBlock             O(n^3,000)   262,1K     576 ms       74 ms        0,13x (mucho mejor)
-9.III.4-ParBlock             O(n^3,000)   262,1K     576 ms       103 ms       0,18x (mucho mejor)
-10.III.5-EnhParBlock         O(n^3,000)   262,1K     576 ms       45 ms        0,08x (mucho mejor)
-11.IV.3-SeqBlock             O(n^3,000)   262,1K     576 ms       31 ms        0,05x (mucho mejor)
-12.IV.4-ParBlock             O(n^3,000)   262,1K     576 ms       68 ms        0,12x (mucho mejor)
-13.IV.5-EnhParBlock          O(n^3,000)   262,1K     576 ms       18 ms        0,03x (mucho mejor)
-14.V.3-SeqBlock              O(n^3,000)   262,1K     576 ms       47 ms        0,08x (mucho mejor)
-15.V.4-ParBlock              O(n^3,000)   262,1K     576 ms       67 ms        0,12x (mucho mejor)
-----------------------------------------------------------------------
-
-INTERPRETACION DEL RATIO (real / estimado):
-  < 0.9x : mas rapido que la teoria (JIT, cache, paralelismo)
-  ~ 1.0x : acorde a la teoria
-  > 1.1x : mas lento (overhead BigInteger, GC, contention hilos)
-
-
-======================================================================
-PRUEBA: 2026-04-18 09:51:30
+Caso 1 (n=1024) | 2026-04-18 10:31:21
 Matriz : 1024 x 1024
 Digitos: 6 por valor
 ======================================================================
@@ -486,41 +11,88 @@ COMO SE CALCULA EL TIEMPO TEORICO:
 ----------------------------------------------------------------------
 1. Calibracion: se mide NaivOnArray con matriz 16x16
    k = tiempo_real / 16^3 = tiempo / 4096 operaciones
-   k = 0,000244 ms por operacion BigInteger en esta maquina
+   k = 0,000488 ms por operacion BigInteger en esta maquina
 
 2. Para cada algoritmo:
    operaciones = factor * n^exponente
    tiempo_estimado = k * operaciones
 
    Exponentes por complejidad teorica:
-   NaivOnArray, bloques : O(n^3)     exponente=3.0,   factor=1.0
-   LoopUnrollingTwo     : O(n^3)     exponente=3.0,   factor=0.5
-   LoopUnrollingFour    : O(n^3)     exponente=3.0,   factor=0.25
-   WinogradOriginal     : O(n^3)     exponente=3.0,   factor=0.5
-   StrassenNaiv         : O(n^2.807) exponente=2.807, factor=1.0
-   StrassenWinograd     : O(n^2.807) exponente=2.807, factor=0.83
-
-3. Ejemplo con n=1024:
-   NaivOnArray: 0,000244 * 1.0 * 1024^3 = 0,000244 * 1073741824 = 262144 ms
+   NaivOnArray, bloques : O(n^3)     factor=1.0
+   LoopUnrollingTwo     : O(n^3)     factor=0.5  (ciclo/2)
+   LoopUnrollingFour    : O(n^3)     factor=0.25 (ciclo/4)
+   WinogradOriginal     : O(n^3)     factor=0.5
+   StrassenNaiv         : O(n^2.807) factor=1.0
+   StrassenWinograd     : O(n^2.807) factor=0.83
 
 ----------------------------------------------------------------------
 Algoritmo                    Complejidad  Ops        Estimado     Real         Ratio         
 ----------------------------------------------------------------------
-1.NaivOnArray                O(n^3,000)   1,1B       4,37 min     4,90 min     1,12x (algo lento)
-2.NaivLoopUnrollingTwo       O(n^3,000)   536,9M     2,18 min     4,89 min     2,24x (mucho mas lento)
-3.NaivLoopUnrollingFour      O(n^3,000)   268,4M     1,09 min     4,90 min     4,49x (mucho mas lento)
-4.WinogradOriginal           O(n^3,000)   536,9M     2,18 min     4,72 min     2,16x (mucho mas lento)
-5.WinogradScaled             O(n^3,000)   536,9M     2,18 min     2,03 min     0,93x (acorde)
-6.StrassenNaiv               O(n^2,807)   281,8M     1,15 min     3,40 min     2,97x (mucho mas lento)
-7.StrassenWinograd           O(n^2,807)   233,9M     57,10 s      3,24 min     3,41x (mucho mas lento)
-8.III.3-SeqBlock             O(n^3,000)   1,1B       4,37 min     3,30 min     0,76x (mejor) 
-9.III.4-ParBlock             O(n^3,000)   1,1B       4,37 min     1,79 min     0,41x (mucho mejor)
-10.III.5-EnhParBlock         O(n^3,000)   1,1B       4,37 min     1,33 min     0,30x (mucho mejor)
-11.IV.3-SeqBlock             O(n^3,000)   1,1B       4,37 min     2,73 min     0,62x (mejor) 
-12.IV.4-ParBlock             O(n^3,000)   1,1B       4,37 min     1,56 min     0,36x (mucho mejor)
-13.IV.5-EnhParBlock          O(n^3,000)   1,1B       4,37 min     1,33 min     0,30x (mucho mejor)
-14.V.3-SeqBlock              O(n^3,000)   1,1B       4,37 min     3,06 min     0,70x (mejor) 
-15.V.4-ParBlock              O(n^3,000)   1,1B       4,37 min     1,62 min     0,37x (mucho mejor)
+1.NaivOnArray                O(n^3,000)   1,1B       8,74 min     4,67 min     0,53x (mejor) 
+2.NaivLoopUnrollingTwo       O(n^3,000)   536,9M     4,37 min     4,67 min     1,07x (acorde)
+3.NaivLoopUnrollingFour      O(n^3,000)   268,4M     2,18 min     4,69 min     2,15x (mucho mas lento)
+4.WinogradOriginal           O(n^3,000)   536,9M     4,37 min     4,55 min     1,04x (acorde)
+5.WinogradScaled             O(n^3,000)   536,9M     4,37 min     1,56 min     0,36x (mucho mejor)
+6.StrassenNaiv               O(n^2,807)   281,8M     2,29 min     2,99 min     1,31x (algo lento)
+7.StrassenWinograd           O(n^2,807)   233,9M     1,90 min     2,77 min     1,45x (algo lento)
+8.III.3-SeqBlock             O(n^3,000)   1,1B       8,74 min     2,77 min     0,32x (mucho mejor)
+9.III.4-ParBlock             O(n^3,000)   1,1B       8,74 min     1,34 min     0,15x (mucho mejor)
+10.III.5-EnhParBlock         O(n^3,000)   1,1B       8,74 min     1,04 min     0,12x (mucho mejor)
+11.IV.3-SeqBlock             O(n^3,000)   1,1B       8,74 min     2,18 min     0,25x (mucho mejor)
+12.IV.4-ParBlock             O(n^3,000)   1,1B       8,74 min     1,15 min     0,13x (mucho mejor)
+13.IV.5-EnhParBlock          O(n^3,000)   1,1B       8,74 min     1,04 min     0,12x (mucho mejor)
+14.V.3-SeqBlock              O(n^3,000)   1,1B       8,74 min     2,63 min     0,30x (mucho mejor)
+15.V.4-ParBlock              O(n^3,000)   1,1B       8,74 min     1,26 min     0,14x (mucho mejor)
+----------------------------------------------------------------------
+
+INTERPRETACION DEL RATIO (real / estimado):
+  < 0.9x : mas rapido que la teoria (JIT, cache, paralelismo)
+  ~ 1.0x : acorde a la teoria
+  > 1.1x : mas lento (overhead BigInteger, GC, contention hilos)
+
+
+======================================================================
+Caso 2 (n=1024) | 2026-04-18 10:38:23
+Matriz : 1024 x 1024
+Digitos: 10 por valor
+======================================================================
+
+COMO SE CALCULA EL TIEMPO TEORICO:
+----------------------------------------------------------------------
+1. Calibracion: se mide NaivOnArray con matriz 16x16
+   k = tiempo_real / 16^3 = tiempo / 4096 operaciones
+   k = 0,000488 ms por operacion BigInteger en esta maquina
+
+2. Para cada algoritmo:
+   operaciones = factor * n^exponente
+   tiempo_estimado = k * operaciones
+
+   Exponentes por complejidad teorica:
+   NaivOnArray, bloques : O(n^3)     factor=1.0
+   LoopUnrollingTwo     : O(n^3)     factor=0.5  (ciclo/2)
+   LoopUnrollingFour    : O(n^3)     factor=0.25 (ciclo/4)
+   WinogradOriginal     : O(n^3)     factor=0.5
+   StrassenNaiv         : O(n^2.807) factor=1.0
+   StrassenWinograd     : O(n^2.807) factor=0.83
+
+----------------------------------------------------------------------
+Algoritmo                    Complejidad  Ops        Estimado     Real         Ratio         
+----------------------------------------------------------------------
+1.NaivOnArray                O(n^3,000)   1,1B       8,74 min     5,46 min     0,62x (mejor) 
+2.NaivLoopUnrollingTwo       O(n^3,000)   536,9M     4,37 min     5,48 min     1,25x (algo lento)
+3.NaivLoopUnrollingFour      O(n^3,000)   268,4M     2,18 min     5,49 min     2,51x (mucho mas lento)
+4.WinogradOriginal           O(n^3,000)   536,9M     4,37 min     5,33 min     1,22x (algo lento)
+5.WinogradScaled             O(n^3,000)   536,9M     4,37 min     1,73 min     0,40x (mucho mejor)
+6.StrassenNaiv               O(n^2,807)   281,8M     2,29 min     3,49 min     1,52x (algo lento)
+7.StrassenWinograd           O(n^2,807)   233,9M     1,90 min     3,17 min     1,66x (algo lento)
+8.III.3-SeqBlock             O(n^3,000)   1,1B       8,74 min     3,44 min     0,39x (mucho mejor)
+9.III.4-ParBlock             O(n^3,000)   1,1B       8,74 min     1,61 min     0,18x (mucho mejor)
+10.III.5-EnhParBlock         O(n^3,000)   1,1B       8,74 min     1,29 min     0,15x (mucho mejor)
+11.IV.3-SeqBlock             O(n^3,000)   1,1B       8,74 min     2,64 min     0,30x (mucho mejor)
+12.IV.4-ParBlock             O(n^3,000)   1,1B       8,74 min     1,48 min     0,17x (mucho mejor)
+13.IV.5-EnhParBlock          O(n^3,000)   1,1B       8,74 min     1,31 min     0,15x (mucho mejor)
+14.V.3-SeqBlock              O(n^3,000)   1,1B       8,74 min     3,36 min     0,38x (mucho mejor)
+15.V.4-ParBlock              O(n^3,000)   1,1B       8,74 min     1,50 min     0,17x (mucho mejor)
 ----------------------------------------------------------------------
 
 INTERPRETACION DEL RATIO (real / estimado):
