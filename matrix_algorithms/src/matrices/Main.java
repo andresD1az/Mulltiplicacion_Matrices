@@ -53,15 +53,15 @@ public class Main {
 
 
     //  CAMBIA ESTOS DOS VALORES Y PRESIONA RUN
-    // ============================================================
-    static final int N_POTENCIA = 13;   // tamano = 2^N_POTENCIA  
-    static final int DIGITOS    = 6 ;   // digitos por valor (minimo 6)
+    static final int N_POTENCIA = 8;   // tamano = 2^N_POTENCIA  
+    static final int DIGITOS    = 2000 ;   // digitos por valor (minimo 1)
 
     public static void main(String[] args) throws Exception {
         // Siempre usa las constantes N_POTENCIA y DIGITOS definidas arriba
         // Los argumentos externos son ignorados - cambia las constantes directamente
         int n           = N_POTENCIA;
         int digitosFijo = DIGITOS;
+   
         int modoValores = 2;
 
         if (n > 30) { System.out.println("ERROR: n demasiado grande."); return; }
@@ -69,22 +69,20 @@ public class Main {
         int tamano = (int) Math.pow(2, n);
         int digitos;
         if (modoValores == 2) {
-            digitos = Math.max(6, digitosFijo); // minimo 6 segun requerimiento
+            digitos = Math.max(1, digitosFijo);
         } else {
             long cuadrado = (long) tamano * tamano;
-            digitos = (int) Math.max(6, 50_000_000L / cuadrado);
+            digitos = (int) Math.max(1, 50_000_000L / cuadrado);
         }
 
-        long ramLibreMB = Runtime.getRuntime().maxMemory() / 1_000_000;
-        long ramNecesariaMB = (long) tamano * tamano * digitos * 2L / 1_000_000;
-        if (modoValores == 1 && ramNecesariaMB > ramLibreMB * 0.8) {
-            System.out.println("ADVERTENCIA: necesita ~" + ramNecesariaMB +
-                " MB pero hay ~" + ramLibreMB + " MB disponibles.");
-            System.out.println("Usa n<=" + sugerirN(ramLibreMB) + " o corre con:");
-            System.out.println("  java -Xmx" + (ramNecesariaMB/1000+2) +
-                "g -cp matrix_algorithms/bin matrices.Main");
-            return;
-        }
+        long ramMaxMB   = Runtime.getRuntime().maxMemory()  / 1_000_000;
+        long ramUsadaMB = (Runtime.getRuntime().totalMemory()
+                         - Runtime.getRuntime().freeMemory()) / 1_000_000;
+        long ramLibreMB = ramMaxMB - ramUsadaMB;
+
+        System.out.printf("RAM JVM max : %d MB%n", ramMaxMB);
+        System.out.printf("RAM libre   : %d MB%n", ramLibreMB);
+        System.out.println("(Sin limite - modo estres maximo)");
 
         // Calibracion para estimado
         BigInteger[][] cA = MatrixUtils.generarBig(16, digitos);
@@ -96,8 +94,8 @@ public class Main {
 
         System.out.println();
         System.out.println("Matriz  : " + tamano + " x " + tamano + " (2^" + n + ")");
-        System.out.println("Digitos : " + digitos + " por valor (minimo 6 segun requerimiento)");
-        System.out.printf("RAM est.: ~%.1f MB%n", (double) ramNecesariaMB);
+        System.out.println("Digitos : " + digitos + " por valor");
+        System.out.printf("RAM libre JVM: %d MB%n", ramLibreMB);
         System.out.println("Hilos   : " + NOMBRES.length + " (uno por algoritmo)");
         System.out.println("CPU     : " + Runtime.getRuntime().availableProcessors() + " nucleos disponibles");
         System.out.println();
