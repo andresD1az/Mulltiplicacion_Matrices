@@ -1,0 +1,79 @@
+
+
+======================================================================
+Caso 1 (n=64) | 2026-04-25 10:01:16
+Matriz : 64 x 64
+Digitos: 4 por valor
+======================================================================
+
+Algoritmo                    Complejidad  Ops        Estimado     Real         Ratio
+----------------------------------------------------------------------
+1.NaivOnArray                O(n^3.000)  262.1K     64 ms        13 ms        0.20x (mucho mejor)
+2.NaivLoopUnrollingTwo       O(n^3.000)  131.1K     32 ms        16 ms        0.50x (mejor)
+3.NaivLoopUnrollingFour      O(n^3.000)  65.5K      16 ms        16 ms        1.00x (acorde)
+4.WinogradOriginal           O(n^3.000)  131.1K     32 ms        26 ms        0.81x (mejor)
+5.WinogradScaled             O(n^3.000)  131.1K     32 ms        23 ms        0.72x (mejor)
+6.StrassenNaiv               O(n^2.807)  117.5K     29 ms        209 ms       7.21x (mucho mas lento)
+7.StrassenWinograd           O(n^2.807)  97.5K      24 ms        133 ms       5.54x (mucho mas lento)
+8.III.3-SeqBlock             O(n^3.000)  262.1K     64 ms        27 ms        0.42x (mucho mejor)
+9.III.4-ParBlock             O(n^3.000)  262.1K     64 ms        26 ms        0.41x (mucho mejor)
+10.III.5-EnhParBlock         O(n^3.000)  262.1K     64 ms        54 ms        0.84x (mejor)
+11.IV.3-SeqBlock             O(n^3.000)  262.1K     64 ms        15 ms        0.23x (mucho mejor)
+12.IV.4-ParBlock             O(n^3.000)  262.1K     64 ms        16 ms        0.25x (mucho mejor)
+13.IV.5-EnhParBlock          O(n^3.000)  262.1K     64 ms        60 ms        0.94x (acorde)
+14.V.3-SeqBlock              O(n^3.000)  262.1K     64 ms        12 ms        0.19x (mucho mejor)
+15.V.4-ParBlock              O(n^3.000)  262.1K     64 ms        61 ms        0.95x (acorde)
+----------------------------------------------------------------------
+
+
+======================================================================
+Caso 2 (n=64) | 2026-04-25 10:01:40
+Matriz : 64 x 64
+Digitos: 4 por valor
+======================================================================
+
+Algoritmo                    Complejidad  Ops        Estimado     Real         Ratio
+----------------------------------------------------------------------
+1.NaivOnArray                O(n^3.000)  262.1K     64 ms        13 ms        0.20x (mucho mejor)
+2.NaivLoopUnrollingTwo       O(n^3.000)  131.1K     32 ms        16 ms        0.50x (mejor)
+3.NaivLoopUnrollingFour      O(n^3.000)  65.5K      16 ms        18 ms        1.12x (algo lento)
+4.WinogradOriginal           O(n^3.000)  131.1K     32 ms        24 ms        0.75x (mejor)
+5.WinogradScaled             O(n^3.000)  131.1K     32 ms        36 ms        1.12x (algo lento)
+6.StrassenNaiv               O(n^2.807)  117.5K     29 ms        164 ms       5.66x (mucho mas lento)
+7.StrassenWinograd           O(n^2.807)  97.5K      24 ms        183 ms       7.62x (mucho mas lento)
+8.III.3-SeqBlock             O(n^3.000)  262.1K     64 ms        14 ms        0.22x (mucho mejor)
+9.III.4-ParBlock             O(n^3.000)  262.1K     64 ms        132 ms       2.06x (mucho mas lento)
+10.III.5-EnhParBlock         O(n^3.000)  262.1K     64 ms        236 ms       3.69x (mucho mas lento)
+11.IV.3-SeqBlock             O(n^3.000)  262.1K     64 ms        98 ms        1.53x (algo lento)
+12.IV.4-ParBlock             O(n^3.000)  262.1K     64 ms        43 ms        0.67x (mejor)
+13.IV.5-EnhParBlock          O(n^3.000)  262.1K     64 ms        78 ms        1.22x (algo lento)
+14.V.3-SeqBlock              O(n^3.000)  262.1K     64 ms        16 ms        0.25x (mucho mejor)
+15.V.4-ParBlock              O(n^3.000)  262.1K     64 ms        39 ms        0.61x (mejor)
+----------------------------------------------------------------------
+
+
+======================================================================
+Caso 3 (n=2048) | 2026-04-26 01:14:43
+Matriz : 2048 x 2048
+Digitos: 4 por valor
+======================================================================
+
+Algoritmo                    Complejidad  Ops        Estimado     Real         Ratio
+----------------------------------------------------------------------
+1.NaivOnArray                O(n^3.000)  8.6B       34.95 min    5.29 h       9.09x (mucho mas lento)
+2.NaivLoopUnrollingTwo       O(n^3.000)  4.3B       17.48 min    5.88 h       20.19x (mucho mas lento)
+3.NaivLoopUnrollingFour      O(n^3.000)  2.1B       8.74 min     5.91 h       40.58x (mucho mas lento)
+4.WinogradOriginal           O(n^3.000)  4.3B       17.48 min    6.35 h       21.81x (mucho mas lento)
+5.WinogradScaled             O(n^3.000)  4.3B       17.48 min    5.20 h       17.86x (mucho mas lento)
+6.StrassenNaiv               O(n^2.807)  2.0B       8.02 min     7.12 h       53.24x (mucho mas lento)
+7.StrassenWinograd           O(n^2.807)  1.6B       6.66 min     6.97 h       62.77x (mucho mas lento)
+8.III.3-SeqBlock             O(n^3.000)  8.6B       34.95 min    3.92 h       6.72x (mucho mas lento)
+9.III.4-ParBlock             O(n^3.000)  8.6B       34.95 min    58.78 min    1.68x (algo lento)
+10.III.5-EnhParBlock         O(n^3.000)  8.6B       34.95 min    1.56 h       2.68x (mucho mas lento)
+11.IV.3-SeqBlock             O(n^3.000)  8.6B       34.95 min    4.42 h       7.58x (mucho mas lento)
+12.IV.4-ParBlock             O(n^3.000)  8.6B       34.95 min    1.04 h       1.78x (algo lento)
+13.IV.5-EnhParBlock          O(n^3.000)  8.6B       34.95 min    1.56 h       2.68x (mucho mas lento)
+14.V.3-SeqBlock              O(n^3.000)  8.6B       34.95 min    3.83 h       6.58x (mucho mas lento)
+15.V.4-ParBlock              O(n^3.000)  8.6B       34.95 min    1.51 h       2.60x (mucho mas lento)
+----------------------------------------------------------------------
+

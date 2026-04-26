@@ -2,16 +2,11 @@ package matrices;
 
 import java.math.BigInteger;
 
-/**
- * Algoritmo 2: NaivLoopUnrollingTwo
- * Tipo: Iterativo
- * Descripcion: Desenvolvimiento del ciclo interno de a 2 pasos.
- * En cada iteracion procesa dos productos simultaneamente:
- *   aux += A[i][k]*B[k][j] + A[i][k+1]*B[k+1][j]
- * Maneja el caso de n impar procesando el ultimo elemento por separado.
- * Complejidad: O(n^3) con menor overhead de ciclo
- * Fuente: Multiplicacion de matrices grandes - 2025-1.pdf, paginas 3-4
- */
+// Algoritmo 2: NaivLoopUnrollingTwo
+// Complejidad: O(n^3) con menor overhead de ciclo
+// Desenrolla el ciclo interno de a 2 pasos por iteracion
+// En cada paso calcula: aux += A[i][k]*B[k][j] + A[i][k+1]*B[k+1][j]
+// Si n es impar, el ultimo elemento se procesa por separado
 public class Algoritmo2_NaivLoopUnrollingTwo {
 
     public static BigInteger[][] multiplicar(BigInteger[][] A, BigInteger[][] B) {
@@ -21,9 +16,11 @@ public class Algoritmo2_NaivLoopUnrollingTwo {
             for (int j = 0; j < m; j++) {
                 BigInteger aux = BigInteger.ZERO;
                 int k = 0;
+                // procesa de a 2 elementos por iteracion
                 for (; k < p - 1; k += 2)
                     aux = aux.add(A[i][k].multiply(B[k][j]))
                              .add(A[i][k+1].multiply(B[k+1][j]));
+                // elemento restante si p es impar
                 if (k < p) aux = aux.add(A[i][k].multiply(B[k][j]));
                 C[i][j] = aux;
             }
